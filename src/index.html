@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css tailwind -->
+    <link href="../dist/output.css" rel="stylesheet">
+    <title>To-Do List</title>
+    <!-- typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <!--favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/src/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/src/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/src/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/src/favicon/site.webmanifest">
+</head>
+
+<body class="font-roboto bg-gray-100">
+    <span class="w-full flex justify-end p-3 font-bold italic text-sm text-blue-500">Developed by Facundo MS.</span>
+    <section class="w-full h-screen py-12">
+        <header class="flex justify-center">
+            <h1 class="text-6xl mb-6 text-blue-900">To Do List</h1>
+        </header>
+        
+        <main class="w-full flex flex-col items-center">
+              <form class="w-full max-w-lg flex border-b border-blue-900 py-2 justify-between">
+                <input 
+                id="input"
+                type="text"
+                placeholder="Enter a new task"
+                class="mx-4 appearance-none bg-transparent leading-tight border-none focus:outline-none"
+                >
+                <button
+                id="add-task-btn"
+                type="button"
+                class="flex-shrink-0 bg-blue-900 hover:bg-blue-500 border-2 border-blue-700 text-sm text-white py-1 px-2 rounded"
+                >
+                  Add Task
+                </button>
+              </form>
+              <h5 id="error" class="font-bold w-full flex justify-center text-red-700 mt-3 hidden">Please, enter a task</h5>
+            
+            <ul id="tasks-container" class="w-full max-w-xl mt-8 flex flex-col items-center gap-2 ">
+                <!-- <li id="task" class="w-full max-w-xl flex justify-between items-center p-4 bg-gray-200 rounded-xl border border-gray-300">
+                  <div class="flex-grow">
+                    <h1>Name Task 1</h1>
+                  </div>
+                  <div class="flex gap-2 items-center justify-center">
+                        <button id="delete-task-btn" class="hover:bg-teal-700 text-black  hover:text-white  px-2 border border-gray-500 hover:border-transparent rounded">Delete</button>
+                        <input type="checkbox" id="check-task" class="form-checkbox h-5 w-5 text-teal-700 border-gray-300 rounded focus:blue-500 px-2">
+                  </div>
+                </li> -->
+            </ul>
+            <br>
+            <footer class="flex justify-center hidden">
+                  <span class="text-blue-900 font-bold">Completed Tasks:</span>
+                  <span id="completed-counter" class="text-blue-900 font-bold">0</span>
+                  <span class="text-blue-900 font-bold">&nbsp;| Uncompleted Tasks:</span> <!-- &nbsp; es para separar "|"-->
+                  <span id="uncompleted-counter" class="text-blue-900 font-bold">0</span>
+            </footer>
+        </main>
+    </section>
+    <script src="./js/script.js"></script>
+</body>
+</html>
