@@ -38,12 +38,15 @@ addButton.addEventListener('click', function() {
 document.addEventListener('keydown', function(event) {
     if (event.code === 'Enter') {
         event.preventDefault();
+        //Solo se procede a ejecutar la función si el usuario presiona enter mientras está escribiendo en el inputTask.
+        if (document.activeElement === inputTask) {
         // Obtengo la tarea que el usuario ingresó.
         const taskValue = getInputTaskValue();
         //Añado la tarea al DOM.
         addTask(taskValue);
         updateCounters();
         updateFooterVisibility();
+        }
     }
 });
 
@@ -59,20 +62,20 @@ const addTask = (nameOfTheTask) => {
         return;
     }
 
-    // Creo el li que contendrá la tarea, le otorgo un id, y le asigno una clase.
+    // Creo el li que contendrá la tarea y le asigno una clase.
     const task = document.createElement('li');
-    task.id = 'task';
     task.className = 'w-full max-w-xl flex justify-between items-center p-4 bg-gray-100 rounded-xl border border-gray-300';
     
-    // Creo el div 'taskNameWrapper' que contendrá un <h1> con el nombre de la tarea ingresada por el usuario.
+    // Creo el div 'taskNameWrapper' que contendrá un input:text con el nombre de la tarea ingresada por el usuario.
     const taskNameWrapper = document.createElement('div');
     taskNameWrapper.className = 'flex-grow overflow-hidden';
-    // Creo el h1 que contendrá el nombre de la tarea.
-    const taskName = document.createElement('h1');
-    taskName.className = 'break-words whitespace-normal w-full h-auto overflow-hidden text-md text-gray-700 font-bold';
-    // El nombre de la tarea (valor del input) se muestra en el h1.
-    taskName.innerText = taskValue;
-    // Añado el h1 al taskNameWrapper.
+    // Creo el input que contendrá el nombre de la tarea.
+    const taskName = document.createElement('input');
+    taskName.className = 'break-words whitespace-normal w-full h-auto overflow-hidden text-md text-gray-700 font-bold focus:outline-none bg-transparent';
+    taskName.type = 'text';
+    taskName.value = taskValue;
+    taskName.disabled = true;
+    // Añado el input al taskNameWrapper.
     taskNameWrapper.appendChild(taskName);
     
     // Creo el div 'taskActionWrapper' que contendrá el deleteButton y el checkbox.
@@ -109,10 +112,12 @@ const addTask = (nameOfTheTask) => {
     editButton.innerHTML = 'Edit';
     // Otorgo un evento click al editButton para que cuando se haga click en él, se muestre un prompt para ingresar el nuevo nombre de la tarea.
     editButton.addEventListener('click', function() {
-        const newNameTask = window.prompt('Enter the new task name:', '');
-        if (newNameTask !== null && newNameTask !== '') {
-            task.querySelector('h1').innerText = newNameTask;
-        };
+        taskName.disabled = false;
+        taskName.focus();
+        // Desahbilito el input para que el usuario no pueda editar el nombre de la tarea luego de diez segundos.
+        setTimeout(() => {
+            taskName.disabled = true;
+        }, 10000);
     });
     // Añado el editButton al taskActionsWrapper.
     taskActionsWrapper.appendChild(editButton);
