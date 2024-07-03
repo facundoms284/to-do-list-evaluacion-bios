@@ -27,10 +27,8 @@ const getInputTaskValue = () => {
 
 // Otorgo un evento click al addButton para que cuando se haga click en él, obtenga la tarea que el usuario ingresó y posteriormente ejecute la función addTask.
 addButton.addEventListener('click', function() {
-    // Obtengo la tarea que el usuario ingresó.
-    const taskValue = getInputTaskValue();
     //Añado la tarea al DOM.
-    addTask(taskValue);
+    addTask();
     updateCounters();
     updateFooterVisibility();
 });
@@ -40,17 +38,15 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault();
         //Solo se procede a ejecutar la función si el usuario presiona enter mientras está escribiendo en el inputTask.
         if (document.activeElement === inputTask) {
-        // Obtengo la tarea que el usuario ingresó.
-        const taskValue = getInputTaskValue();
         //Añado la tarea al DOM.
-        addTask(taskValue);
+        addTask();
         updateCounters();
         updateFooterVisibility();
         }
     }
 });
 
-const addTask = (nameOfTheTask) => {
+const addTask = () => {
     // obtengo el valor del input.
     const taskValue = getInputTaskValue();
     
