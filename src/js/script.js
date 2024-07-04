@@ -4,7 +4,30 @@ const tasksContainer = document.getElementById('tasks-container');
 const inputTask = document.getElementById('input');
 const addButton = document.getElementById('add-task-btn');
 const errorElement = document.getElementById('error');
+const taskEditedElement = document.getElementById('taskEdited');
 const footer = document.querySelector('footer')
+
+const saveTasks = () => {
+  const tasks = Array.from(tasksContainer.children).map(task => {
+      const taskName = task.querySelector('input[type="text"]').value;
+      const status = task.querySelector('input[type="checkbox"]').checked;
+      return { taskName, status };
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  };
+  
+  const loadTasks = () => {
+      const tasksString = localStorage.getItem('tasks');
+      if (tasksString) {
+        const tasks = JSON.parse(tasksString);
+        //taskData es la información de la tarea almacenada en localStorage: la función loadTasks al recargar la página crea las tareas con el name y el status que se encuentran en el localStorage.
+        tasks.forEach(taskData => { 
+          addTask(taskData.taskName, taskData.status);
+        });
+        updateCounters();
+        updateFooterVisibility();
+      }
+    };
 
 // Función que se encarga de actualizar los contadores de tareas completadas y no completadas.
 const updateCounters = () => {
@@ -46,10 +69,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-const addTask = () => {
-    // obtengo el valor del input.
-    const taskValue = getInputTaskValue();
-    
+const addTask = (taskValue = getInputTaskValue(), status) => {
     if (taskValue === '') {
         errorElement.classList.remove('hidden');
         setTimeout(() => {
@@ -81,10 +101,12 @@ const addTask = () => {
     // Creo el checkBox.
     const checkBox = document.createElement('input');
     checkBox.type = 'checkbox';
+    checkBox.checked = status;
     checkBox.className = 'form-checkbox h-5 w-5 text-teal-700 border-gray-300 rounded focus:bg-blue-500 px-2';
     // Cuando el estado del checkbox cambie, actualizo los contadores de tareas completadas y no completadas.
     checkBox.addEventListener('change', function() {
         updateCounters();
+        saveTasks();
     });
     // Añado el checkbox al taskActionsWrapper.
     taskActionsWrapper.appendChild(checkBox);
@@ -98,6 +120,7 @@ const addTask = () => {
     tasksContainer.removeChild(task);
     updateCounters();
     updateFooterVisibility();
+    saveTasks();
     });
     // Añado el deleteButton al taskActionsWrapper.
     taskActionsWrapper.appendChild(deleteButton);
@@ -117,11 +140,16 @@ const addTask = () => {
             //Solo se procede a ejecutar la función si el usuario presiona enter mientras está escribiendo en el inputTask.
             if (document.activeElement === taskName) {
                 taskName.disabled = true;
-            }
-            if (taskName.value === '') {
+                taskEditedElement.classList.remove('hidden');
+                setTimeout(() => {
+                    taskEditedElement.classList.add('hidden');
+                }, 3000);
+                if (taskName.value === '') {
                 tasksContainer.removeChild(task);
                 updateCounters();
                 updateFooterVisibility();
+              }
+              saveTasks();
             }
         }
         });
@@ -135,6 +163,7 @@ const addTask = () => {
     // Si el usuario ingresó una tarea, la agrego al DOM y limpio el input para que el usuario pueda ingresar otra tarea distinta.
     tasksContainer.appendChild(task);
     inputTask.value = '';
+    saveTasks();
 };
 
 // Función que se encarga de mostrar/ocultar el footer dependiendo de si hay tareas agregadas o no.
@@ -146,3 +175,6 @@ const updateFooterVisibility = () => {
         footer.classList.remove('hidden');
     }
 };
+
+loadTasks();
+
