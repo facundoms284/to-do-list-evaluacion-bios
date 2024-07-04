@@ -110,10 +110,21 @@ const addTask = () => {
     editButton.addEventListener('click', function() {
         taskName.disabled = false;
         taskName.focus();
-        // Desahbilito el input para que el usuario no pueda editar el nombre de la tarea luego de diez segundos.
-        setTimeout(() => {
-            taskName.disabled = true;
-        }, 10000);
+        // Si el usuario al editar la tarea ingresa un nuevo nombre, al presionar enter, se edita correctamente, pero si el usuario ingresa un nombre vacío, al presionar enter se elimina la tarea.
+        document.addEventListener('keydown', function(event) {
+        if (event.code === 'Enter') {
+            event.preventDefault();
+            //Solo se procede a ejecutar la función si el usuario presiona enter mientras está escribiendo en el inputTask.
+            if (document.activeElement === taskName) {
+                taskName.disabled = true;
+            }
+            if (taskName.value === '') {
+                tasksContainer.removeChild(task);
+                updateCounters();
+                updateFooterVisibility();
+            }
+        }
+        });
     });
     // Añado el editButton al taskActionsWrapper.
     taskActionsWrapper.appendChild(editButton);
